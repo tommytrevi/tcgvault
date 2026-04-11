@@ -1,25 +1,9 @@
 import type { CollectionItem } from './types';
 
 const KEYS = {
-  API_KEY: 'tcgvault:api-key',
   COLLECTION: 'tcgvault:collection',
   WISHLIST: 'tcgvault:wishlist',
 } as const;
-
-// --- API Key ---
-
-export function getApiKey(): string | null {
-  if (typeof window === 'undefined') return null;
-  return localStorage.getItem(KEYS.API_KEY);
-}
-
-export function setApiKey(key: string): void {
-  localStorage.setItem(KEYS.API_KEY, key);
-}
-
-export function removeApiKey(): void {
-  localStorage.removeItem(KEYS.API_KEY);
-}
 
 // --- Collection ---
 

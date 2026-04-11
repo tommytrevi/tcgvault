@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import type { CollectionItem, Condition } from '../../lib/types';
-import { CONDITION_LABELS, CONDITIONS, GAMES } from '../../lib/types';
+import { CONDITION_LABELS, GAMES } from '../../lib/types';
 import { removeFromCollection, updateCollectionItem } from '../../lib/storage';
-import { getClient } from '../../lib/client';
 
 interface Props {
   collection: CollectionItem[];
@@ -41,10 +40,14 @@ export default function CollectionList({ collection, onCollectionChange }: Props
   const handleRefreshPrice = async (item: CollectionItem) => {
     setRefreshingId(item.id + item.condition);
     try {
-      const client = getClient();
-      const response = await client.cards.search({ ids: [item.id] });
-      const card = response.data[0];
-      if (card) {
+      const res = await fetch('/api/batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ids: [item.id] }),
+      });
+      const data = await res.json();
+      if (res.ok && data.data?.length > 0) {
+        const card = data.data[0];
         const nmPrice = card.prices.raw['near_mint']?.tcgplayer?.market ?? undefined;
         const condPrice = card.prices.raw[item.condition as Condition]?.tcgplayer?.market ?? undefined;
         const updated = updateCollectionItem(item.id, item.condition, {

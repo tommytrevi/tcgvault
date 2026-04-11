@@ -6,7 +6,7 @@
   <div class="max-w-4xl mx-auto">
     <div class="text-center mb-12">
       <h2 style="font-size: 2rem; font-weight: 700; color: var(--color-text-heading); margin-bottom: 0.75rem;">
-        Up and running in 3 steps
+        Deploy in 5 minutes
       </h2>
     </div>
 
@@ -15,19 +15,19 @@
         {
           step: '01',
           title: 'Get a free API key',
-          description: 'Sign up at tcgpricelookup.com and get your free API key. The free plan covers all TCGs with generous rate limits.',
+          description: 'Sign up at tcgpricelookup.com and get your free API key. 200 requests/day on the free plan covers all 8 TCGs.',
           link: { text: 'Get your key →', href: 'https://tcgpricelookup.com/pricing' },
         },
         {
           step: '02',
-          title: 'Paste it in TCGVault',
-          description: 'Open the app and paste your key when prompted. It\'s stored in your browser\'s localStorage and never leaves your device.',
+          title: 'Clone and configure',
+          description: 'Clone the repo, copy .env.example to .env, and add your TCG_API_KEY. The key stays on your server — never in the browser.',
           link: null,
         },
         {
           step: '03',
-          title: 'Add cards, track value',
-          description: 'Search for cards, add them to your collection with condition, and watch your total value update in real time.',
+          title: 'Deploy and track',
+          description: 'Deploy to Cloudflare Pages (or run locally). Search cards, add them to your collection, watch your total value update.',
           link: null,
         },
       ].map(item => (
@@ -61,13 +61,23 @@
 <section class="py-16 px-4" style="border-top: 1px solid var(--color-border);">
   <div class="max-w-3xl mx-auto text-center">
     <h2 style="font-size: 2rem; font-weight: 700; color: var(--color-text-heading); margin-bottom: 0.75rem;">
-      Deploy in 60 seconds
+      One-click deploy
     </h2>
     <p style="color: var(--color-text-muted); font-size: 1rem; margin-bottom: 2rem;">
-      One-click deploy to your favorite platform. No configuration needed.
+      Set <code style="font-family: var(--font-family-mono); color: var(--color-accent); font-size: 0.9rem;">TCG_API_KEY</code> in your platform's environment variables during setup.
     </p>
 
     <div class="flex flex-wrap justify-center gap-4 mb-8">
+      <a
+        href="https://deploy.workers.cloudflare.com/?url=https://github.com/TCG-Price-Lookup/tcgvault"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="background-color: #f48120; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px;"
+        class="hover:opacity-90 transition-opacity"
+      >
+        Deploy to Cloudflare Pages
+      </a>
+
       <a
         href="https://vercel.com/new/clone?repository-url=https://github.com/TCG-Price-Lookup/tcgvault"
         target="_blank"
@@ -88,22 +98,14 @@
       >
         Deploy to Netlify
       </a>
-
-      <a
-        href="https://deploy.workers.cloudflare.com/?url=https://github.com/TCG-Price-Lookup/tcgvault"
-        target="_blank"
-        rel="noopener noreferrer"
-        style="background-color: #f48120; color: #fff; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px;"
-        class="hover:opacity-90 transition-opacity"
-      >
-        Deploy to CF Pages
-      </a>
     </div>
 
     <div style="background-color: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 10px; padding: 1.25rem; display: inline-block; text-align: left;">
       <div style="font-family: var(--font-family-mono); font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: 0.25rem;"># Run locally</div>
       <div style="font-family: var(--font-family-mono); font-size: 0.875rem; color: var(--color-text);">git clone https://github.com/TCG-Price-Lookup/tcgvault</div>
-      <div style="font-family: var(--font-family-mono); font-size: 0.875rem; color: var(--color-text);">cd tcgvault && npm install && npm run dev</div>
+      <div style="font-family: var(--font-family-mono); font-size: 0.875rem; color: var(--color-text);">cd tcgvault && cp .env.example .env</div>
+      <div style="font-family: var(--font-family-mono); font-size: 0.875rem; color: var(--color-text-muted);"># Add TCG_API_KEY to .env</div>
+      <div style="font-family: var(--font-family-mono); font-size: 0.875rem; color: var(--color-text);">npm install && npm run dev</div>
     </div>
   </div>
 </section>
@@ -120,20 +122,20 @@
     <div class="flex flex-col gap-4">
       {[
         {
-          q: 'Is TCGVault really free?',
-          a: 'Yes. TCGVault itself is completely free and open source (MIT license). You only need a free API key from tcgpricelookup.com, which has a generous free tier covering all 8 TCGs.',
+          q: 'Do I need to pay to use this?',
+          a: 'No. TCGVault itself is completely free and open source (MIT license). Get a free TCG Price Lookup API key at tcgpricelookup.com/pricing — 200 requests/day, no credit card required. For more requests, upgrade to Trader ($14.99/mo).',
         },
         {
           q: 'Where is my data stored?',
-          a: "Entirely in your browser's localStorage. No account, no cloud, no backend. Your collection and API key never leave your device.",
+          a: "Your collection list is stored in your browser's localStorage. Card price data comes from TCG Price Lookup API via your server. No account, no cloud database.",
         },
         {
-          q: 'Is my API key safe?',
-          a: 'Yes. Your key is stored in localStorage and is only ever sent to tcgpricelookup.com to fetch card prices. TCGVault itself has no backend and cannot see your key.',
+          q: 'How do I set my API key?',
+          a: 'Add TCG_API_KEY to .env when self-hosting, or set it in your deployment platform\'s environment variables (Cloudflare Pages → Settings → Environment Variables). The key is never sent to the browser.',
         },
         {
           q: 'What happens if I clear my browser data?',
-          a: 'Your collection will be lost. We recommend exporting your collection as JSON or CSV regularly. The export feature is available in the app.',
+          a: 'Your collection will be lost. Export your collection as JSON or CSV regularly from the app. The API key is on the server, so you only lose the local collection list.',
         },
         {
           q: 'Which TCGs are supported?',
@@ -141,11 +143,7 @@
         },
         {
           q: 'Can I self-host this?',
-          a: 'Absolutely. Clone the repo and deploy anywhere that serves static files — Vercel, Netlify, Cloudflare Pages, GitHub Pages, or your own server.',
-        },
-        {
-          q: 'How do I get an API key?',
-          a: 'Sign up at tcgpricelookup.com/pricing. The free plan requires no credit card and gives you access to all endpoints. The setup guide is at tcgfast.com/docs/getting-started/.',
+          a: 'Absolutely. Clone the repo, add your TCG_API_KEY to .env, and deploy to any platform that supports server-side rendering — Cloudflare Pages, Vercel, Netlify, or your own server.',
         },
         {
           q: 'Can I contribute to TCGVault?',
@@ -176,16 +174,25 @@
       Ready to know your collection's worth?
     </h2>
     <p style="color: var(--color-text-muted); font-size: 1rem; margin-bottom: 2rem;">
-      Get your free API key from{' '}
-      <a href="https://tcgpricelookup.com/pricing" target="_blank" rel="noopener" style="color: var(--color-accent); text-decoration: none;">tcgpricelookup.com</a>
-      {' '}and start tracking in minutes.
+      Clone, set your API key, deploy in 5 minutes. Free and open source.
     </p>
-    <a
-      href="/app"
-      style="background-color: var(--color-accent); color: #000; font-weight: 700; font-size: 1.125rem; padding: 14px 32px; border-radius: 8px; text-decoration: none; display: inline-block;"
-      class="transition-opacity hover:opacity-90"
-    >
-      Launch TCGVault Free
-    </a>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+      <a
+        href="/app"
+        style="background-color: var(--color-accent); color: #000; font-weight: 700; font-size: 1.125rem; padding: 14px 32px; border-radius: 8px; text-decoration: none; display: inline-block;"
+        class="transition-opacity hover:opacity-90"
+      >
+        Launch TCGVault
+      </a>
+      <a
+        href="https://github.com/TCG-Price-Lookup/tcgvault"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="background-color: var(--color-bg-card); color: var(--color-text); border: 1px solid var(--color-border); font-weight: 600; font-size: 1.125rem; padding: 14px 32px; border-radius: 8px; text-decoration: none; display: inline-block;"
+        class="transition-colors hover:border-white"
+      >
+        View on GitHub
+      </a>
+    </div>
   </div>
 </section>

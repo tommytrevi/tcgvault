@@ -18,7 +18,7 @@
     </h1>
 
     <p style="font-size: 1.125rem; color: var(--color-text-muted); max-width: 32rem; margin: 0 auto 2rem; line-height: 1.7;">
-      Free, open source, self-hostable. Works with Pokemon, MTG, Yu-Gi-Oh!, Lorcana, One Piece, Star Wars: Unlimited, Flesh and Blood, and Pokemon Japan.
+      Free, open source, self-hostable. Clone, set your API key, deploy in 5 minutes. Works with Pokemon, MTG, Yu-Gi-Oh!, Lorcana, One Piece, Star Wars: Unlimited, Flesh and Blood, and Pokemon Japan.
     </p>
 
     <!-- Stats bar -->
@@ -27,7 +27,7 @@
         { label: 'Games', value: '8' },
         { label: 'Cards', value: '300,000+' },
         { label: 'Open Source', value: '100%' },
-        { label: 'Backend', value: 'Zero' },
+        { label: 'Backend Required', value: 'None' },
       ].map(stat => (
         <div style="background-color: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 8px; padding: 10px 20px; text-align: center;">
           <div style="font-family: var(--font-family-mono); font-size: 1.25rem; font-weight: 600; color: var(--color-accent);">{stat.value}</div>
@@ -67,18 +67,19 @@
         <span style="color: var(--color-text-muted); font-size: 0.75rem; margin-left: 8px; font-family: var(--font-family-mono);">tcgvault — collection tracker</span>
       </div>
       <div style="font-family: var(--font-family-mono); font-size: 0.875rem; line-height: 1.8;">
-        <div><span style="color: var(--color-text-muted);">$</span> <span style="color: var(--color-text);">search charizard --game pokemon</span></div>
-        <div style="color: var(--color-text-muted);">Searching 300,000+ cards...</div>
+        <div><span style="color: var(--color-text-muted);">$</span> <span style="color: var(--color-text);">git clone https://github.com/TCG-Price-Lookup/tcgvault</span></div>
+        <div><span style="color: var(--color-text-muted);">$</span> <span style="color: var(--color-text);">cp .env.example .env  <span style="color: var(--color-text-muted)"># add TCG_API_KEY</span></span></div>
+        <div><span style="color: var(--color-text-muted);">$</span> <span style="color: var(--color-text);">npm install && npm run dev</span></div>
         <div style="margin-top: 0.5rem;">
-          <span style="color: var(--color-accent);">✓</span> <span style="color: var(--color-text);">Charizard ex (sv3pt5-54)</span> <span style="color: var(--color-text-muted);">NM: </span><span style="color: var(--color-accent);">$24.50</span>
+          <span style="color: var(--color-accent);">✓</span> <span style="color: var(--color-text);">Server running at http://localhost:4321</span>
         </div>
         <div>
-          <span style="color: var(--color-accent);">✓</span> <span style="color: var(--color-text);">Charizard VMAX (swsh45-74)</span> <span style="color: var(--color-text-muted);">NM: </span><span style="color: var(--color-accent);">$18.20</span>
+          <span style="color: var(--color-accent);">✓</span> <span style="color: var(--color-text);">API key loaded from .env</span>
         </div>
         <div>
-          <span style="color: var(--color-accent);">✓</span> <span style="color: var(--color-text);">Charizard V (swsh9-154)</span> <span style="color: var(--color-text-muted);">NM: </span><span style="color: var(--color-accent);">$8.75</span>
+          <span style="color: var(--color-accent);">✓</span> <span style="color: var(--color-text);">Ready to track 300,000+ cards</span>
         </div>
-        <div style="margin-top: 0.5rem; color: var(--color-text-muted);">Collection total: <span style="color: var(--color-accent); font-weight: 600;">$51.45</span></div>
+        <div style="margin-top: 0.5rem; color: var(--color-text-muted);">Collection total: <span style="color: var(--color-accent); font-weight: 600;">$0.00</span></div>
         <div class="cursor-blink" style="color: var(--color-accent);">_</div>
       </div>
     </div>

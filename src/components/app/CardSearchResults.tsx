@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import type { Card, GameSlug } from '@tcgpricelookup/sdk';
-import { getClient } from '../../lib/client';
 import { addToCollection } from '../../lib/storage';
 import type { CollectionItem, Condition } from '../../lib/types';
 import { CONDITION_LABELS, CONDITIONS } from '../../lib/types';
@@ -13,11 +12,13 @@ interface Props {
   onCollectionChange: (items: CollectionItem[]) => void;
 }
 
+const NOT_CONFIGURED_MSG = 'Server not configured. Set TCG_API_KEY in your .env file.';
+
 export default function CardSearchResults({ query, game, collection, onCollectionChange }: Props) {
   const [results, setResults] = useState<Card[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [notConfigured, setNotConfigured] = useState(false);
   const [addingCard, setAddingCard] = useState<string | null>(null);
   const [addCondition, setAddCondition] = useState<Condition>('near_mint');
   const [addSuccess, setAddSuccess] = useState<string | null>(null);
@@ -32,20 +33,29 @@ export default function CardSearchResults({ query, game, collection, onCollectio
     if (!query || query.trim().length < 2) {
       setResults([]);
       setError(null);
+      setNotConfigured(false);
       return;
     }
 
     debounceRef.current = setTimeout(async () => {
       setLoading(true);
       setError(null);
+      setNotConfigured(false);
       try {
-        const client = getClient();
-        const response = await client.cards.search({
-          q: query.trim(),
-          game: game || undefined,
-          limit: 20,
-        });
-        setResults(response.data);
+        const params = new URLSearchParams({ q: query.trim() });
+        if (game) params.set('game', game);
+        const res = await fetch(`/api/search?${params.toString()}`);
+        const data = await res.json();
+        if (!res.ok) {
+          if (data.error === 'TCG_API_KEY not configured') {
+            setNotConfigured(true);
+          } else {
+            setError(data.error ?? 'Search failed. Please try again.');
+          }
+          setResults([]);
+        } else {
+          setResults(data.data ?? []);
+        }
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Search failed. Please try again.');
         setResults([]);
@@ -121,6 +131,29 @@ export default function CardSearchResults({ query, game, collection, onCollectio
     return (
       <div style={{ textAlign: 'center', padding: '4rem 2rem', color: 'var(--color-text-muted)', fontFamily: 'var(--font-family-mono)', fontSize: '0.9rem' }}>
         Searching...
+      </div>
+    );
+  }
+
+  if (notConfigured) {
+    return (
+      <div style={{
+        backgroundColor: 'rgba(255, 68, 68, 0.1)',
+        border: '1px solid rgba(255, 68, 68, 0.3)',
+        borderRadius: '8px',
+        padding: '1rem 1.25rem',
+        color: '#ff6b6b',
+        fontSize: '0.875rem',
+      }}>
+        {NOT_CONFIGURED_MSG}{' '}
+        <a
+          href="https://tcgfast.com/docs/getting-started/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: '#ff6b6b', fontWeight: 600 }}
+        >
+          Learn how
+        </a>
       </div>
     );
   }

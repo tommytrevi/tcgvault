@@ -1,10 +1,11 @@
 ---
+export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout
   title="About TCGVault — How it Works"
-  description="How TCGVault works. Client-only, localStorage, BYOK — your API key never leaves your browser."
+  description="How TCGVault works. Server-rendered, API key in .env, collection stored in localStorage."
 >
   <div style="max-width: 48rem; margin: 0 auto; padding: 3rem 1rem;">
     <!-- Heading -->
@@ -16,8 +17,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         How TCGVault Works
       </h1>
       <p style="color: var(--color-text-muted); font-size: 1.05rem; line-height: 1.7;">
-        TCGVault is a fully client-side TCG collection tracker. There is no backend, no database, no account system.
-        Everything happens in your browser.
+        TCGVault is a self-hostable TCG collection tracker. You deploy it with your API key set as an environment variable — the key lives on the server, never in the browser. Your collection is stored in your browser's localStorage.
       </p>
     </div>
 
@@ -30,20 +30,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
         {[
           {
-            title: 'Static Site (Astro 5)',
-            description: 'TCGVault is built with Astro and outputs a pure static site. No server-side rendering, no serverless functions. The entire app is HTML, CSS, and JavaScript.',
+            title: 'Hybrid Astro 5 App',
+            description: 'TCGVault uses Astro\'s hybrid output mode. Landing pages are pre-rendered static HTML. API routes (/api/*) are server-rendered and run on Cloudflare Pages (or Node/Vercel/Netlify).',
           },
           {
-            title: 'Client-only React Islands',
-            description: 'Interactive parts (search, collection tracker, settings) are React components mounted as Astro islands with client:load. They hydrate only what needs to be interactive.',
+            title: 'Server-side API Routes',
+            description: 'All card price data is fetched server-side via Astro API routes. The SDK is called server-side only — never in the browser. API routes read TCG_API_KEY from the server environment.',
           },
           {
-            title: 'localStorage for Persistence',
-            description: 'Your collection and API key are stored in your browser\'s localStorage under the "tcgvault:" namespace. No network request is made to save data.',
+            title: 'localStorage for Collection',
+            description: 'Your collection (card names, quantities, conditions, cached prices) is stored in your browser\'s localStorage under the "tcgvault:" namespace. No network request is made to save it.',
           },
           {
-            title: 'BYOK — Bring Your Own Key',
-            description: 'You supply your own TCG Price Lookup API key. It\'s stored locally and sent only to tcgpricelookup.com to fetch card data. TCGVault itself never receives it.',
+            title: 'Secure by Default',
+            description: 'Your API key is set via .env on the server or in your deployment platform\'s environment variables. It is never exposed in the client bundle, never sent to the browser, never stored in localStorage.',
           },
         ].map(item => (
           <div style="background-color: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 10px; padding: 1.25rem;">
@@ -63,14 +63,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
           <div style="color: var(--color-text);">
             <span style="color: var(--color-accent);">Your Browser</span>
-            <span style="color: var(--color-text-muted);"> → localStorage (API key + collection)</span>
+            <span style="color: var(--color-text-muted);"> → localStorage (collection only)</span>
           </div>
           <div style="color: var(--color-text);">
             <span style="color: var(--color-accent);">Your Browser</span>
-            <span style="color: var(--color-text-muted);"> → tcgpricelookup.com (card prices, with your API key)</span>
+            <span style="color: var(--color-text-muted);"> → /api/search (your TCGVault server)</span>
+          </div>
+          <div style="color: var(--color-text);">
+            <span style="color: var(--color-accent);">TCGVault Server</span>
+            <span style="color: var(--color-text-muted);"> → tcgpricelookup.com (with TCG_API_KEY from env)</span>
           </div>
           <div style="color: var(--color-text-muted); border-top: 1px solid var(--color-border); margin-top: 0.5rem; padding-top: 0.5rem;">
-            TCGVault servers: <span style="color: var(--color-accent);">none</span> — it's a static file
+            API key in browser: <span style="color: var(--color-accent);">never</span>
           </div>
         </div>
       </div>
@@ -83,12 +87,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </h2>
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.75rem;">
         {[
-          { name: 'Astro 5', role: 'Static site framework' },
+          { name: 'Astro 5', role: 'Hybrid SSR framework' },
+          { name: '@astrojs/cloudflare', role: 'Cloudflare Pages adapter' },
           { name: 'React 19', role: 'Interactive islands' },
           { name: 'Tailwind CSS 4', role: 'Styling' },
-          { name: '@tcgpricelookup/sdk', role: 'Price data API' },
+          { name: '@tcgpricelookup/sdk', role: 'Price data API (server-side)' },
           { name: 'TypeScript (strict)', role: 'Type safety' },
-          { name: 'localStorage', role: 'Data persistence' },
+          { name: 'localStorage', role: 'Collection persistence' },
         ].map(item => (
           <div style="background-color: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 8px; padding: 0.875rem;">
             <div style="color: var(--color-text-heading); font-weight: 600; font-size: 0.875rem; margin-bottom: 0.25rem; font-family: var(--font-family-mono);">
@@ -109,10 +114,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <ul style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.8; margin: 0; padding-left: 1.25rem;">
           <li>No account or login required</li>
           <li>No analytics or tracking scripts</li>
-          <li>Your API key is stored only in your browser's localStorage</li>
-          <li>Your collection data never leaves your browser</li>
-          <li>Card price requests go directly from your browser to tcgpricelookup.com</li>
-          <li>TCGVault is a static file — there is no server that could receive your data</li>
+          <li>Your API key is stored only in server environment variables — never in the browser</li>
+          <li>Your collection data is stored in your browser's localStorage</li>
+          <li>Card price requests go from your server to tcgpricelookup.com — your key is never exposed client-side</li>
+          <li>You own the deployment — you control where the data goes</li>
         </ul>
       </div>
     </section>
@@ -124,7 +129,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </h2>
       <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1rem;">
         TCGVault uses the <a href="https://tcgpricelookup.com" target="_blank" rel="noopener" style="color: var(--color-accent); text-decoration: none;">TCG Price Lookup API</a>
-        to fetch real-time card prices. You need a free API key to use the app.
+        to fetch real-time card prices. You need a free API key, which you set as <code style="font-family: var(--font-family-mono); color: var(--color-accent); font-size: 0.85rem;">TCG_API_KEY</code> in your .env or deployment settings.
       </p>
       <div style="display: flex; flex-direction: column; gap: 0.75rem;">
         <a href="https://tcgpricelookup.com/pricing" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; color: var(--color-accent); text-decoration: none; font-size: 0.9rem; font-weight: 500;">
@@ -135,10 +140,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           Setup guide at tcgfast.com/docs/getting-started/
         </a>
-        <a href="https://tcgfast.com/docs/sdks/javascript/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; color: var(--color-accent); text-decoration: none; font-size: 0.9rem; font-weight: 500;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          JavaScript SDK reference at tcgfast.com/docs/sdks/javascript/
-        </a>
       </div>
     </section>
 
@@ -148,7 +149,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         Ready to track your collection?
       </h2>
       <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">
-        Free, open source, no account needed.
+        Free, open source. Own your deployment.
       </p>
       <a
         href="/app"

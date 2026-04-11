@@ -1,23 +1,12 @@
 import { useState } from 'react';
-import { getApiKey, removeApiKey, clearCollection, setApiKey } from '../../lib/storage';
-import { createClient, resetClient } from '../../lib/client';
+import { clearCollection } from '../../lib/storage';
 
 interface Props {
-  onApiKeyRemoved: () => void;
   onCollectionCleared: () => void;
 }
 
-export default function Settings({ onApiKeyRemoved, onCollectionCleared }: Props) {
-  const currentKey = getApiKey() ?? '';
-  const maskedKey = currentKey.length > 8
-    ? currentKey.slice(0, 8) + '•'.repeat(Math.min(currentKey.length - 8, 20))
-    : '••••••••';
-
+export default function Settings({ onCollectionCleared }: Props) {
   const [confirmClear, setConfirmClear] = useState(false);
-  const [newKey, setNewKey] = useState('');
-  const [changingKey, setChangingKey] = useState(false);
-  const [keyStatus, setKeyStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [keyError, setKeyError] = useState('');
 
   const handleClearCollection = () => {
     if (!confirmClear) {
@@ -29,38 +18,13 @@ export default function Settings({ onApiKeyRemoved, onCollectionCleared }: Props
     setConfirmClear(false);
   };
 
-  const handleChangeKey = async () => {
-    const trimmed = newKey.trim();
-    if (!trimmed) return;
-    setKeyStatus('loading');
-    setKeyError('');
-    try {
-      const client = createClient(trimmed);
-      await client.games.list();
-      setApiKey(trimmed);
-      setKeyStatus('success');
-      setChangingKey(false);
-      setNewKey('');
-      setTimeout(() => setKeyStatus('idle'), 2000);
-    } catch (err) {
-      setKeyStatus('error');
-      setKeyError(err instanceof Error ? err.message : 'Invalid key');
-    }
-  };
-
-  const handleRemoveKey = () => {
-    removeApiKey();
-    resetClient();
-    onApiKeyRemoved();
-  };
-
   return (
     <div style={{ maxWidth: '36rem' }}>
       <h2 style={{ color: 'var(--color-text-heading)', fontWeight: 700, fontSize: '1.25rem', marginBottom: '1.5rem' }}>
         Settings
       </h2>
 
-      {/* API Key section */}
+      {/* API Key info section */}
       <div style={{
         backgroundColor: 'var(--color-bg-card)',
         border: '1px solid var(--color-border)',
@@ -71,119 +35,31 @@ export default function Settings({ onApiKeyRemoved, onCollectionCleared }: Props
         <h3 style={{ color: 'var(--color-text-heading)', fontWeight: 600, fontSize: '0.95rem', marginBottom: '0.5rem' }}>
           API Key
         </h3>
-        <div style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem', marginBottom: '1rem' }}>
-          Your key is stored only in localStorage and sent only to tcgpricelookup.com.
-        </div>
-
         <div style={{
-          fontFamily: 'var(--font-family-mono)',
-          fontSize: '0.85rem',
-          color: 'var(--color-text-muted)',
-          backgroundColor: 'var(--color-bg)',
-          border: '1px solid var(--color-border)',
-          borderRadius: '6px',
-          padding: '8px 12px',
-          marginBottom: '1rem',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '0.625rem',
+          backgroundColor: 'rgba(0, 255, 136, 0.05)',
+          border: '1px solid rgba(0, 255, 136, 0.2)',
+          borderRadius: '8px',
+          padding: '0.875rem 1rem',
+          marginBottom: '0.75rem',
         }}>
-          {maskedKey}
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: 'var(--color-accent)', flexShrink: 0, marginTop: '2px' }}>
+            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+          </svg>
+          <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', lineHeight: 1.6, margin: 0 }}>
+            API key is configured via the <code style={{ fontFamily: 'var(--font-family-mono)', color: 'var(--color-accent)', fontSize: '0.8rem' }}>TCG_API_KEY</code> environment variable on the server. It is never exposed to the browser.
+          </p>
         </div>
-
-        {!changingKey ? (
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
-            <button
-              onClick={() => setChangingKey(true)}
-              style={{
-                backgroundColor: 'transparent',
-                border: '1px solid var(--color-border)',
-                borderRadius: '6px',
-                padding: '7px 14px',
-                color: 'var(--color-text)',
-                fontSize: '0.85rem',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-family-sans)',
-              }}
-            >
-              Change Key
-            </button>
-            <button
-              onClick={handleRemoveKey}
-              style={{
-                backgroundColor: 'transparent',
-                border: '1px solid rgba(255,68,68,0.3)',
-                borderRadius: '6px',
-                padding: '7px 14px',
-                color: '#ff6b6b',
-                fontSize: '0.85rem',
-                cursor: 'pointer',
-                fontFamily: 'var(--font-family-sans)',
-              }}
-            >
-              Remove Key
-            </button>
-          </div>
-        ) : (
-          <div>
-            <input
-              type="password"
-              value={newKey}
-              onChange={(e) => setNewKey(e.target.value)}
-              placeholder="New API key..."
-              style={{
-                width: '100%',
-                backgroundColor: 'var(--color-bg)',
-                border: '1px solid var(--color-border)',
-                borderRadius: '6px',
-                padding: '8px 12px',
-                color: 'var(--color-text)',
-                fontFamily: 'var(--font-family-mono)',
-                fontSize: '0.875rem',
-                outline: 'none',
-                boxSizing: 'border-box',
-                marginBottom: '0.5rem',
-              }}
-            />
-            {keyStatus === 'error' && (
-              <div style={{ color: '#ff6b6b', fontSize: '0.8rem', marginBottom: '0.5rem' }}>{keyError}</div>
-            )}
-            {keyStatus === 'success' && (
-              <div style={{ color: 'var(--color-accent)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>Key updated!</div>
-            )}
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <button
-                onClick={handleChangeKey}
-                disabled={keyStatus === 'loading'}
-                style={{
-                  backgroundColor: 'var(--color-accent)',
-                  border: 'none',
-                  borderRadius: '6px',
-                  padding: '7px 14px',
-                  color: '#000',
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  fontFamily: 'var(--font-family-sans)',
-                }}
-              >
-                {keyStatus === 'loading' ? 'Validating...' : 'Save New Key'}
-              </button>
-              <button
-                onClick={() => { setChangingKey(false); setNewKey(''); setKeyStatus('idle'); }}
-                style={{
-                  backgroundColor: 'transparent',
-                  border: '1px solid var(--color-border)',
-                  borderRadius: '6px',
-                  padding: '7px 14px',
-                  color: 'var(--color-text-muted)',
-                  fontSize: '0.85rem',
-                  cursor: 'pointer',
-                  fontFamily: 'var(--font-family-sans)',
-                }}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
+        <a
+          href="https://tcgfast.com/docs/getting-started/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: 'var(--color-accent)', fontSize: '0.85rem', textDecoration: 'none' }}
+        >
+          Setup guide →
+        </a>
       </div>
 
       {/* Clear collection */}
@@ -251,9 +127,6 @@ export default function Settings({ onApiKeyRemoved, onCollectionCleared }: Props
           </a>
           <a href="https://tcgfast.com/docs/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', fontSize: '0.875rem', textDecoration: 'none' }}>
             API documentation — tcgfast.com/docs
-          </a>
-          <a href="https://tcgfast.com/docs/sdks/javascript/" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', fontSize: '0.875rem', textDecoration: 'none' }}>
-            JavaScript SDK reference
           </a>
           <a href="https://github.com/TCG-Price-Lookup/tcgvault" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', fontSize: '0.875rem', textDecoration: 'none' }}>
             TCGVault on GitHub

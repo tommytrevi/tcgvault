@@ -8,12 +8,12 @@ const features = [
   {
     icon: '📈',
     title: 'Live Pricing',
-    description: 'Real-time card prices via the TCG Price Lookup API. Every condition, every version — NM, LP, MP, HP, and Damaged.',
+    description: 'Real-time card prices via the TCG Price Lookup API — fetched server-side, served securely. Every condition: NM, LP, MP, HP, and Damaged.',
   },
   {
-    icon: '🔑',
-    title: 'Bring Your Own Key',
-    description: 'Your API key lives in your browser\'s localStorage. It\'s never sent to any server except tcgpricelookup.com. Zero tracking.',
+    icon: '🔒',
+    title: 'API Key on Server',
+    description: 'Your TCG_API_KEY lives in .env on the server — never exposed to the browser. Zero client-side secrets.',
   },
   {
     icon: '📤',
@@ -23,7 +23,7 @@ const features = [
   {
     icon: '🚀',
     title: 'Self-hostable',
-    description: 'Deploy to Vercel, Netlify, or Cloudflare Pages in under 60 seconds. Or run locally with a single npm command.',
+    description: 'Deploy to Cloudflare Pages, Vercel, or Netlify in under 5 minutes. Clone, add API key to env, deploy.',
   },
   {
     icon: '⚡',
@@ -40,7 +40,7 @@ const features = [
         Everything you need to track your collection
       </h2>
       <p style="color: var(--color-text-muted); font-size: 1rem; max-width: 30rem; margin: 0 auto;">
-        Built for collectors who want full control and zero compromises on privacy.
+        Built for collectors who want full control. Own your data, own your deployment.
       </p>
     </div>
 

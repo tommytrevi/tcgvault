@@ -1,8 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getApiKey } from '../../lib/storage';
 import { getCollection, saveCollection } from '../../lib/storage';
 import type { CollectionItem, AppView } from '../../lib/types';
-import ApiKeySetup from './ApiKeySetup';
 import SearchBar from './SearchBar';
 import CardSearchResults from './CardSearchResults';
 import CollectionList from './CollectionList';
@@ -13,7 +11,6 @@ import GameFilter from './GameFilter';
 import Settings from './Settings';
 
 export default function App() {
-  const [apiKey, setApiKeyState] = useState<string | null>(null);
   const [view, setView] = useState<AppView>('search');
   const [query, setQuery] = useState('');
   const [selectedGame, setSelectedGame] = useState<GameSlug | ''>('');
@@ -22,22 +19,12 @@ export default function App() {
 
   useEffect(() => {
     setMounted(true);
-    const key = getApiKey();
-    setApiKeyState(key);
     setCollection(getCollection());
-  }, []);
-
-  const handleApiKeySet = useCallback((key: string) => {
-    setApiKeyState(key);
   }, []);
 
   const handleCollectionChange = useCallback((updated: CollectionItem[]) => {
     setCollection(updated);
     saveCollection(updated);
-  }, []);
-
-  const handleApiKeyRemoved = useCallback(() => {
-    setApiKeyState(null);
   }, []);
 
   if (!mounted) {
@@ -48,10 +35,6 @@ export default function App() {
         </div>
       </div>
     );
-  }
-
-  if (!apiKey) {
-    return <ApiKeySetup onKeySet={handleApiKeySet} />;
   }
 
   return (
@@ -129,7 +112,7 @@ export default function App() {
       )}
 
       {view === 'settings' && (
-        <Settings onApiKeyRemoved={handleApiKeyRemoved} onCollectionCleared={() => handleCollectionChange([])} />
+        <Settings onCollectionCleared={() => handleCollectionChange([])} />
       )}
     </div>
   );

@@ -1,0 +1,15 @@
+---
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import App from '../../components/app/App';
+---
+
+<BaseLayout
+  title="TCGVault アプリ — コレクションを追跡"
+  description="TCGカードコレクションを追跡。カードを検索し、価格を確認し、コレクションの総額を把握しましょう。"
+  noFooter={false}
+>
+  <div style="min-height: calc(100vh - 14rem); padding-bottom: 3rem;">
+    <App client:load />
+  </div>
+</BaseLayout>

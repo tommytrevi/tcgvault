@@ -1,34 +1,39 @@
 ---
+import { getLangFromUrl, useTranslations } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const features = [
   {
     icon: '🎮',
-    title: 'Multi-game Support',
-    description: '8 TCGs in one place — Pokemon, MTG, Yu-Gi-Oh!, Lorcana, One Piece, Star Wars: Unlimited, Flesh and Blood, and Pokemon Japan.',
+    title: t('features.multiGame.title'),
+    description: t('features.multiGame.description'),
   },
   {
     icon: '📈',
-    title: 'Live Pricing',
-    description: 'Real-time card prices via the TCG Price Lookup API — fetched server-side, served securely. Every condition: NM, LP, MP, HP, and Damaged.',
+    title: t('features.livePricing.title'),
+    description: t('features.livePricing.description'),
   },
   {
     icon: '🔒',
-    title: 'API Key on Server',
-    description: 'Your TCG_API_KEY lives in .env on the server — never exposed to the browser. Zero client-side secrets.',
+    title: t('features.envConfig.title'),
+    description: t('features.envConfig.description'),
   },
   {
     icon: '📤',
-    title: 'Export Anywhere',
-    description: 'Download your collection as JSON or CSV. Compatible with spreadsheets, custom scripts, or any tool you use.',
+    title: t('features.exportAnywhere.title'),
+    description: t('features.exportAnywhere.description'),
   },
   {
     icon: '🚀',
-    title: 'Self-hostable',
-    description: 'Deploy to Cloudflare Pages, Vercel, or Netlify in under 5 minutes. Clone, add API key to env, deploy.',
+    title: t('features.selfHostable.title'),
+    description: t('features.selfHostable.description'),
   },
   {
     icon: '⚡',
-    title: 'Open Source',
-    description: 'MIT licensed. Inspect every line of code. Fork it, customize it, contribute back. No black boxes.',
+    title: t('features.openSource.title'),
+    description: t('features.openSource.description'),
   },
 ];
 ---
@@ -37,11 +42,8 @@ const features = [
   <div class="max-w-5xl mx-auto">
     <div class="text-center mb-12">
       <h2 style="font-size: 2rem; font-weight: 700; color: var(--color-text-heading); margin-bottom: 0.75rem;">
-        Everything you need to track your collection
+        {t('features.title')}
       </h2>
-      <p style="color: var(--color-text-muted); font-size: 1rem; max-width: 30rem; margin: 0 auto;">
-        Built for collectors who want full control. Own your data, own your deployment.
-      </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

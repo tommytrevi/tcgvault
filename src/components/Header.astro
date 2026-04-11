@@ -1,10 +1,33 @@
 ---
+import { getLangFromUrl, useTranslations, localizeUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const currentPath = Astro.url.pathname;
+
+// Strip lang prefix to get the base path for language switching
+const basePath = currentPath.replace(/^\/ja/, '') || '/';
+const enUrl = basePath;
+const jaUrl = `/ja${basePath === '/' ? '' : basePath}`;
+
+// Localized nav hrefs
+const homeHref = localizeUrl('/', lang);
+const aboutHref = localizeUrl('/about', lang);
+const appHref = localizeUrl('/app', lang);
+
+// Active state helpers
+function isActive(path: string): boolean {
+  if (path === '/' || path === '/ja' || path === '/ja/') {
+    return currentPath === '/' || currentPath === '/ja' || currentPath === '/ja/';
+  }
+  return currentPath.startsWith(path);
+}
 ---
 
 <header style="background-color: var(--color-bg); border-bottom: 1px solid var(--color-border);" class="sticky top-0 z-50">
   <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-2 no-underline">
+    <a href={homeHref} class="flex items-center gap-2 no-underline">
       <span style="font-family: var(--font-family-mono); color: var(--color-accent); font-weight: 600; font-size: 1.1rem;">
         tcgvault
       </span>
@@ -15,18 +38,18 @@ const currentPath = Astro.url.pathname;
 
     <nav class="flex items-center gap-6">
       <a
-        href="/"
-        style={`color: ${currentPath === '/' ? 'var(--color-accent)' : 'var(--color-text-muted)'}; font-size: 0.875rem; text-decoration: none;`}
+        href={homeHref}
+        style={`color: ${isActive(homeHref) && !isActive(aboutHref) && !isActive(appHref) ? 'var(--color-accent)' : 'var(--color-text-muted)'}; font-size: 0.875rem; text-decoration: none;`}
         class="hover:text-white transition-colors"
       >
-        Home
+        {t('nav.home')}
       </a>
       <a
-        href="/about"
-        style={`color: ${currentPath === '/about' ? 'var(--color-accent)' : 'var(--color-text-muted)'}; font-size: 0.875rem; text-decoration: none;`}
+        href={aboutHref}
+        style={`color: ${isActive(aboutHref) ? 'var(--color-accent)' : 'var(--color-text-muted)'}; font-size: 0.875rem; text-decoration: none;`}
         class="hover:text-white transition-colors"
       >
-        About
+        {t('nav.about')}
       </a>
       <a
         href="https://github.com/TCG-Price-Lookup/tcgvault"
@@ -35,14 +58,31 @@ const currentPath = Astro.url.pathname;
         style="color: var(--color-text-muted); font-size: 0.875rem; text-decoration: none;"
         class="hover:text-white transition-colors"
       >
-        GitHub
+        {t('nav.github')}
       </a>
+
+      <!-- Language switcher -->
+      <div class="flex items-center gap-1" style="border: 1px solid var(--color-border); border-radius: 6px; overflow: hidden;">
+        <a
+          href={enUrl}
+          style={`font-size: 0.75rem; padding: 3px 8px; text-decoration: none; font-weight: 500; transition: background-color 0.15s; background-color: ${lang === 'en' ? 'var(--color-accent)' : 'transparent'}; color: ${lang === 'en' ? '#000' : 'var(--color-text-muted)'};`}
+        >
+          EN
+        </a>
+        <a
+          href={jaUrl}
+          style={`font-size: 0.75rem; padding: 3px 8px; text-decoration: none; font-weight: 500; transition: background-color 0.15s; background-color: ${lang === 'ja' ? 'var(--color-accent)' : 'transparent'}; color: ${lang === 'ja' ? '#000' : 'var(--color-text-muted)'};`}
+        >
+          JA
+        </a>
+      </div>
+
       <a
-        href="/app"
+        href={appHref}
         style="background-color: var(--color-accent); color: #000; font-size: 0.875rem; font-weight: 600; padding: 6px 16px; border-radius: 6px; text-decoration: none;"
         class="transition-opacity hover:opacity-90"
       >
-        Launch App
+        {t('nav.app')}
       </a>
     </nav>
   </div>

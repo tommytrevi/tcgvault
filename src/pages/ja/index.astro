@@ -1,0 +1,16 @@
+---
+export const prerender = true;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Features from '../../components/Features.astro';
+import CTA from '../../components/CTA.astro';
+---
+
+<BaseLayout
+  title="TCGVault — オープンソースTCGコレクション追跡ツール"
+  description="無料、オープンソース、セルフホスト対応のTCGコレクション追跡ツール。Pokemon、MTG、遊戯王、Lorcanaなどに対応。BYOK、バックエンド不要。"
+>
+  <Hero />
+  <Features />
+  <CTA />
+</BaseLayout>

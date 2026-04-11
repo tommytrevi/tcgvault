@@ -1,4 +1,8 @@
 ---
+import { getLangFromUrl, useTranslations, localizeUrl } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <!-- How it works -->
@@ -6,7 +10,7 @@
   <div class="max-w-4xl mx-auto">
     <div class="text-center mb-12">
       <h2 style="font-size: 2rem; font-weight: 700; color: var(--color-text-heading); margin-bottom: 0.75rem;">
-        Deploy in 5 minutes
+        {t('howItWorks.title')}
       </h2>
     </div>
 
@@ -14,20 +18,20 @@
       {[
         {
           step: '01',
-          title: 'Get a free API key',
-          description: 'Sign up at tcgpricelookup.com and get your free API key. 200 requests/day on the free plan covers all 8 TCGs.',
-          link: { text: 'Get your key →', href: 'https://tcgpricelookup.com/pricing' },
+          title: t('howItWorks.step1.title'),
+          description: t('howItWorks.step1.description'),
+          link: { text: lang === 'ja' ? 'キーを取得 →' : 'Get your key →', href: 'https://tcgpricelookup.com/pricing' },
         },
         {
           step: '02',
-          title: 'Clone and configure',
-          description: 'Clone the repo, copy .env.example to .env, and add your TCG_API_KEY. The key stays on your server — never in the browser.',
+          title: t('howItWorks.step2.title'),
+          description: t('howItWorks.step2.description'),
           link: null,
         },
         {
           step: '03',
-          title: 'Deploy and track',
-          description: 'Deploy to Cloudflare Pages (or run locally). Search cards, add them to your collection, watch your total value update.',
+          title: t('howItWorks.step3.title'),
+          description: t('howItWorks.step3.description'),
           link: null,
         },
       ].map(item => (
@@ -61,10 +65,10 @@
 <section class="py-16 px-4" style="border-top: 1px solid var(--color-border);">
   <div class="max-w-3xl mx-auto text-center">
     <h2 style="font-size: 2rem; font-weight: 700; color: var(--color-text-heading); margin-bottom: 0.75rem;">
-      One-click deploy
+      {t('deploy.title')}
     </h2>
     <p style="color: var(--color-text-muted); font-size: 1rem; margin-bottom: 2rem;">
-      Set <code style="font-family: var(--font-family-mono); color: var(--color-accent); font-size: 0.9rem;">TCG_API_KEY</code> in your platform's environment variables during setup.
+      {t('deploy.description')}
     </p>
 
     <div class="flex flex-wrap justify-center gap-4 mb-8">
@@ -115,40 +119,18 @@
   <div class="max-w-3xl mx-auto">
     <div class="text-center mb-10">
       <h2 style="font-size: 2rem; font-weight: 700; color: var(--color-text-heading);">
-        Frequently asked questions
+        {t('faq.title')}
       </h2>
     </div>
 
     <div class="flex flex-col gap-4">
       {[
-        {
-          q: 'Do I need to pay to use this?',
-          a: 'No. TCGVault itself is completely free and open source (MIT license). Get a free TCG Price Lookup API key at tcgpricelookup.com/pricing — 200 requests/day, no credit card required. For more requests, upgrade to Trader ($14.99/mo).',
-        },
-        {
-          q: 'Where is my data stored?',
-          a: "Your collection list is stored in your browser's localStorage. Card price data comes from TCG Price Lookup API via your server. No account, no cloud database.",
-        },
-        {
-          q: 'How do I set my API key?',
-          a: 'Add TCG_API_KEY to .env when self-hosting, or set it in your deployment platform\'s environment variables (Cloudflare Pages → Settings → Environment Variables). The key is never sent to the browser.',
-        },
-        {
-          q: 'What happens if I clear my browser data?',
-          a: 'Your collection will be lost. Export your collection as JSON or CSV regularly from the app. The API key is on the server, so you only lose the local collection list.',
-        },
-        {
-          q: 'Which TCGs are supported?',
-          a: 'Pokemon (EN), Pokemon (JP), Magic: The Gathering, Yu-Gi-Oh!, Disney Lorcana, One Piece, Star Wars: Unlimited, and Flesh and Blood.',
-        },
-        {
-          q: 'Can I self-host this?',
-          a: 'Absolutely. Clone the repo, add your TCG_API_KEY to .env, and deploy to any platform that supports server-side rendering — Cloudflare Pages, Vercel, Netlify, or your own server.',
-        },
-        {
-          q: 'Can I contribute to TCGVault?',
-          a: 'Yes! PRs are welcome on GitHub. Check the issues tab for good first issues, or open a feature request.',
-        },
+        { q: t('faq.q1'), a: t('faq.a1') },
+        { q: t('faq.q2'), a: t('faq.a2') },
+        { q: t('faq.q3'), a: t('faq.a3') },
+        { q: t('faq.q4'), a: t('faq.a4') },
+        { q: t('faq.q5'), a: t('faq.a5') },
+        { q: t('faq.q6'), a: t('faq.a6') },
       ].map(item => (
         <details
           style="background-color: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 10px; padding: 1.25rem;"
@@ -171,18 +153,18 @@
 <section class="py-20 px-4" style="border-top: 1px solid var(--color-border);">
   <div class="max-w-2xl mx-auto text-center">
     <h2 style="font-size: 2.25rem; font-weight: 700; color: var(--color-text-heading); margin-bottom: 1rem;">
-      Ready to know your collection's worth?
+      {t('cta.title')}
     </h2>
     <p style="color: var(--color-text-muted); font-size: 1rem; margin-bottom: 2rem;">
-      Clone, set your API key, deploy in 5 minutes. Free and open source.
+      {t('cta.description')}
     </p>
     <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
       <a
-        href="/app"
+        href={localizeUrl('/app', lang)}
         style="background-color: var(--color-accent); color: #000; font-weight: 700; font-size: 1.125rem; padding: 14px 32px; border-radius: 8px; text-decoration: none; display: inline-block;"
         class="transition-opacity hover:opacity-90"
       >
-        Launch TCGVault
+        {t('cta.getStarted')}
       </a>
       <a
         href="https://github.com/TCG-Price-Lookup/tcgvault"
@@ -191,7 +173,7 @@
         style="background-color: var(--color-bg-card); color: var(--color-text); border: 1px solid var(--color-border); font-weight: 600; font-size: 1.125rem; padding: 14px 32px; border-radius: 8px; text-decoration: none; display: inline-block;"
         class="transition-colors hover:border-white"
       >
-        View on GitHub
+        {t('footer.github')}
       </a>
     </div>
   </div>

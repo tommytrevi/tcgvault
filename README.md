@@ -29,6 +29,7 @@ TCGVault is a self-hostable web app for tracking your trading card game collecti
 - **Export**: Download your collection as JSON or CSV
 - **Self-hostable**: Deploy to Cloudflare Pages, Vercel, Netlify, or run locally
 - **Open source**: MIT licensed, PRs welcome
+- **i18n**: Available in English (default) and Japanese (`/ja/`)
 
 ---
 

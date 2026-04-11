@@ -20,11 +20,12 @@ const {
 
 const lang = getLangFromUrl(Astro.url);
 
-// Canonical URL helpers for hreflang
-const canonicalBase = 'https://tcgvault.pages.dev';
+// Canonical URL helpers for hreflang — site is hosted at fmz8.com
+const canonicalBase = 'https://fmz8.com';
 const pathWithoutLang = Astro.url.pathname.replace(/^\/ja/, '') || '/';
 const enUrl = `${canonicalBase}${pathWithoutLang}`;
 const jaUrl = `${canonicalBase}/ja${pathWithoutLang === '/' ? '' : pathWithoutLang}`;
+const canonicalUrl = lang === 'ja' ? jaUrl : enUrl;
 ---
 
 <!doctype html>
@@ -33,9 +34,19 @@ const jaUrl = `${canonicalBase}/ja${pathWithoutLang === '/' ? '' : pathWithoutLa
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="TCGVault" />
+    <meta property="og:image" content={new URL(ogImage, canonicalBase).href} />
+    <meta property="og:locale" content={lang === 'ja' ? 'ja_JP' : 'en_US'} />
+    <meta property="og:locale:alternate" content={lang === 'ja' ? 'en_US' : 'ja_JP'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, canonicalBase).href} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate" hreflang="en" href={enUrl} />
     <link rel="alternate" hreflang="ja" href={jaUrl} />

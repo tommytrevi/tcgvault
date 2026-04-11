@@ -2,11 +2,12 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import cloudflare from '@astrojs/cloudflare';
+import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://tcgvault.pages.dev',
+  site: 'https://fmz8.com',
   output: 'server',
   adapter: cloudflare({
     platformProxy: { enabled: true },
@@ -18,7 +19,18 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
-  integrations: [react()],
+  integrations: [
+    react(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'en',
+        locales: {
+          en: 'en-US',
+          ja: 'ja-JP',
+        },
+      },
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

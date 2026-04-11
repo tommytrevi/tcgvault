@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tcgvault.app/sitemap.xml
+Sitemap: https://fmz8.com/sitemap-index.xml

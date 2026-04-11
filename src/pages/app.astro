@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import App from '../components/app/App';
+---
+
+<BaseLayout
+  title="TCGVault App — Track Your Collection"
+  description="Track your TCG card collection. Search cards, view prices, and know your total collection value."
+>
+  <div style="min-height: calc(100vh - 14rem); padding-bottom: 3rem;">
+    <App client:load />
+  </div>
+</BaseLayout>

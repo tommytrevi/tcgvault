@@ -1,0 +1,86 @@
+---
+---
+
+<section class="pt-20 pb-16 px-4">
+  <div class="max-w-4xl mx-auto text-center">
+    <!-- Terminal badge -->
+    <div class="inline-flex items-center gap-2 mb-6" style="background-color: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 8px; padding: 6px 14px;">
+      <span style="display: inline-block; width: 8px; height: 8px; background-color: var(--color-accent); border-radius: 50%;"></span>
+      <span style="font-family: var(--font-family-mono); font-size: 0.8rem; color: var(--color-text-muted);">
+        v0.1.0 — Open Source · MIT License
+      </span>
+    </div>
+
+    <!-- Main headline -->
+    <h1 style="font-size: clamp(2.25rem, 5vw, 3.75rem); font-weight: 700; color: var(--color-text-heading); line-height: 1.15; margin-bottom: 1.25rem;">
+      Track your TCG collection.<br />
+      <span style="color: var(--color-accent);">Know your worth.</span>
+    </h1>
+
+    <p style="font-size: 1.125rem; color: var(--color-text-muted); max-width: 32rem; margin: 0 auto 2rem; line-height: 1.7;">
+      Free, open source, self-hostable. Works with Pokemon, MTG, Yu-Gi-Oh!, Lorcana, One Piece, Star Wars: Unlimited, Flesh and Blood, and Pokemon Japan.
+    </p>
+
+    <!-- Stats bar -->
+    <div class="flex flex-wrap justify-center gap-4 mb-8">
+      {[
+        { label: 'Games', value: '8' },
+        { label: 'Cards', value: '300,000+' },
+        { label: 'Open Source', value: '100%' },
+        { label: 'Backend', value: 'Zero' },
+      ].map(stat => (
+        <div style="background-color: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 8px; padding: 10px 20px; text-align: center;">
+          <div style="font-family: var(--font-family-mono); font-size: 1.25rem; font-weight: 600; color: var(--color-accent);">{stat.value}</div>
+          <div style="font-size: 0.75rem; color: var(--color-text-muted);">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-wrap justify-center gap-4 mb-10">
+      <a
+        href="/app"
+        style="background-color: var(--color-accent); color: #000; font-weight: 700; font-size: 1rem; padding: 12px 28px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;"
+        class="transition-opacity hover:opacity-90"
+      >
+        Launch App
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a
+        href="https://github.com/TCG-Price-Lookup/tcgvault"
+        target="_blank"
+        rel="noopener noreferrer"
+        style="background-color: var(--color-bg-card); color: var(--color-text); border: 1px solid var(--color-border); font-weight: 600; font-size: 1rem; padding: 12px 28px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;"
+        class="transition-colors hover:border-white"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        View on GitHub
+      </a>
+    </div>
+
+    <!-- Terminal preview -->
+    <div style="background-color: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 12px; padding: 1.5rem; max-width: 36rem; margin: 0 auto; text-align: left;">
+      <div class="flex items-center gap-2 mb-4">
+        <span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:#ff5f57;"></span>
+        <span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:#febc2e;"></span>
+        <span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:#28c840;"></span>
+        <span style="color: var(--color-text-muted); font-size: 0.75rem; margin-left: 8px; font-family: var(--font-family-mono);">tcgvault — collection tracker</span>
+      </div>
+      <div style="font-family: var(--font-family-mono); font-size: 0.875rem; line-height: 1.8;">
+        <div><span style="color: var(--color-text-muted);">$</span> <span style="color: var(--color-text);">search charizard --game pokemon</span></div>
+        <div style="color: var(--color-text-muted);">Searching 300,000+ cards...</div>
+        <div style="margin-top: 0.5rem;">
+          <span style="color: var(--color-accent);">✓</span> <span style="color: var(--color-text);">Charizard ex (sv3pt5-54)</span> <span style="color: var(--color-text-muted);">NM: </span><span style="color: var(--color-accent);">$24.50</span>
+        </div>
+        <div>
+          <span style="color: var(--color-accent);">✓</span> <span style="color: var(--color-text);">Charizard VMAX (swsh45-74)</span> <span style="color: var(--color-text-muted);">NM: </span><span style="color: var(--color-accent);">$18.20</span>
+        </div>
+        <div>
+          <span style="color: var(--color-accent);">✓</span> <span style="color: var(--color-text);">Charizard V (swsh9-154)</span> <span style="color: var(--color-text-muted);">NM: </span><span style="color: var(--color-accent);">$8.75</span>
+        </div>
+        <div style="margin-top: 0.5rem; color: var(--color-text-muted);">Collection total: <span style="color: var(--color-accent); font-weight: 600;">$51.45</span></div>
+        <div class="cursor-blink" style="color: var(--color-accent);">_</div>
+      </div>
+    </div>
+  </div>
+</section>

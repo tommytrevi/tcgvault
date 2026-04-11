@@ -1,0 +1,64 @@
+---
+const features = [
+  {
+    icon: '🎮',
+    title: 'Multi-game Support',
+    description: '8 TCGs in one place — Pokemon, MTG, Yu-Gi-Oh!, Lorcana, One Piece, Star Wars: Unlimited, Flesh and Blood, and Pokemon Japan.',
+  },
+  {
+    icon: '📈',
+    title: 'Live Pricing',
+    description: 'Real-time card prices via the TCG Price Lookup API. Every condition, every version — NM, LP, MP, HP, and Damaged.',
+  },
+  {
+    icon: '🔑',
+    title: 'Bring Your Own Key',
+    description: 'Your API key lives in your browser\'s localStorage. It\'s never sent to any server except tcgpricelookup.com. Zero tracking.',
+  },
+  {
+    icon: '📤',
+    title: 'Export Anywhere',
+    description: 'Download your collection as JSON or CSV. Compatible with spreadsheets, custom scripts, or any tool you use.',
+  },
+  {
+    icon: '🚀',
+    title: 'Self-hostable',
+    description: 'Deploy to Vercel, Netlify, or Cloudflare Pages in under 60 seconds. Or run locally with a single npm command.',
+  },
+  {
+    icon: '⚡',
+    title: 'Open Source',
+    description: 'MIT licensed. Inspect every line of code. Fork it, customize it, contribute back. No black boxes.',
+  },
+];
+---
+
+<section class="py-16 px-4">
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 style="font-size: 2rem; font-weight: 700; color: var(--color-text-heading); margin-bottom: 0.75rem;">
+        Everything you need to track your collection
+      </h2>
+      <p style="color: var(--color-text-muted); font-size: 1rem; max-width: 30rem; margin: 0 auto;">
+        Built for collectors who want full control and zero compromises on privacy.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {features.map(feature => (
+        <div
+          style="background-color: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: 12px; padding: 1.5rem;"
+          class="hover:border-opacity-60 transition-colors"
+        >
+          <div style="font-size: 1.75rem; margin-bottom: 0.75rem;" role="img">{feature.icon}</div>
+          <h3 style="color: var(--color-text-heading); font-weight: 600; font-size: 1rem; margin-bottom: 0.5rem;">
+            {feature.title}
+          </h3>
+          <p style="color: var(--color-text-muted); font-size: 0.875rem; line-height: 1.6;">
+            {feature.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

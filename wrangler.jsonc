@@ -24,5 +24,8 @@
       "binding": "KV",
       "id": "9168ce5854484a199ac34140cc1e0f44"
     }
-  ]
+  ],
+  "vars": {
+    "TCG_API_KEY": "tcg_eedec611c2e87bf1f342c803be730c152fb786205ac11ba7"
+  }
 }

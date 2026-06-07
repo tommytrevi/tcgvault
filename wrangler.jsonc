@@ -3,5 +3,11 @@
   "compatibility_date": "2026-06-07",
   "assets": {
     "directory": "./dist"
-  }
+  },
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "9168ce5854484a199ac34140cc1e0f44"
+    }
+  ]
 }

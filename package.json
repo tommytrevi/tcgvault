@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && cp public/.assetsignore dist/.assetsignore",
     "preview": "astro preview"
   },
   "dependencies": {

@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { TcgLookupClient } from '@tcgpricelookup/sdk';
 
 export const GET: APIRoute = async () => {
   const apiKey = import.meta.env.TCG_API_KEY;
@@ -10,15 +9,22 @@ export const GET: APIRoute = async () => {
     });
   }
 
-  const client = new TcgLookupClient({ apiKey });
-
   try {
-    const results = await client.games.list();
-    return new Response(JSON.stringify(results), {
+    const res = await fetch('https://api.tcgpricelookup.com/v1/games', {
+      headers: {
+        'X-API-Key': apiKey,
+        'Accept': 'application/json',
+      },
+    });
+
+    const text = await res.text();
+
+    return new Response(text, {
+      status: res.status,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (err: any) {
-    return new Response(JSON.stringify({ error: err.message }), {
+    return new Response(JSON.stringify({ error: err?.message || 'Upstream request failed' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

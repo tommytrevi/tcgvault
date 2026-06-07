@@ -1,6 +1,7 @@
 {
   "name": "tcgvault",
   "compatibility_date": "2026-06-07",
+  "main": "./dist/_worker.js/index.js",
   "assets": {
     "directory": "./dist"
   },
@@ -21,7 +22,7 @@
   },
   "kv_namespaces": [
     {
-      "binding": "KV",
+      "binding": "SESSION",
       "id": "9168ce5854484a199ac34140cc1e0f44"
     }
   ],
